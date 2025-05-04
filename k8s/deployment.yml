@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-js-sample
+  labels:
+    app: node-js-sample
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-js-sample
+  template:
+    metadata:
+      labels:
+        app: node-js-sample
+    spec:
+      containers:
+      - name: node-js-sample
+        image: 192.168.48.131:8081/library/node-js-sample:v1.0.0
+        ports:
+        - containerPort: 3000
