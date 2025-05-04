@@ -14,6 +14,13 @@ pipeline {
                 git url: 'https://github.com/pratham7289/Argocd-Pipeline.git', branch: 'main'
             }
         }
+        stage('Verify Workspace') {
+            steps {
+                sh 'pwd'
+                sh 'ls -la'
+                sh 'if [ -d k8s ]; then ls -la k8s; else echo "k8s directory not found"; fi'
+            }
+        }
         stage('Build Docker Image') {
             steps {
                 script {
@@ -34,14 +41,11 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'github-credentials', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
                     sh """
-                        # Verify file exists
-                        ls -l k8s/deployment.yaml
-                        # Update image tag
-                        sed -i 's|image: ${IMAGE_NAME}:.*|image: ${IMAGE_NAME}:${TAG}|' k8s/deployment.yaml
-                        # Configure git
+                        ls -l k8s/deployment.yml
+                        sed -i 's|image: ${IMAGE_NAME}:.*|image: ${IMAGE_NAME}:${TAG}|' k8s/deployment.yml
                         git config --global user.email "jenkins@example.com"
                         git config --global user.name "Jenkins"
-                        git add k8s/deployment.yaml
+                        git add k8s/deployment.yml
                         git commit -m "Update image tag to ${TAG}" || echo "No changes to commit"
                         git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/pratham7289/Argocd-Pipeline.git main
                     """
