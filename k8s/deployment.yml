@@ -17,6 +17,6 @@ spec:
         - name: regcred
       containers:
       - name: node-js-sample
-        image: 192.168.48.131:8081/library/node-js-sample:v1.0.5
+        image: 192.168.48.131:8081/library/node-js-sample:v1.0.6
         ports:
         - containerPort: 3000
