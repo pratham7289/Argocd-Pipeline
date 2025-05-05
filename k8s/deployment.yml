@@ -2,8 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: node-js-sample
-  labels:
-    app: node-js-sample
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -14,8 +13,10 @@ spec:
       labels:
         app: node-js-sample
     spec:
+      imagePullSecrets:
+        - name: regcred
       containers:
       - name: node-js-sample
-        image: 192.168.48.131:8081/library/node-js-sample:v1.0.0
+        image: 192.168.48.131:8081/library/node-js-sample:v1.0.5
         ports:
         - containerPort: 3000
